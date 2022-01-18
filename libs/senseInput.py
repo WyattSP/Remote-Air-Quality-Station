@@ -20,7 +20,7 @@ def get_sense_data(duration=None,interval=None):
     stoptime = timestamp + datetime.timedelta(seconds=duration)
 
     while timestamp < stoptime:
-        sense_data.append(timestamp,sense.get_humidity(),sense.get_temperature(),sense.pressure())
+        sense_data.append((timestamp,sense.get_humidity(),sense.get_temperature(),sense.pressure()))
         time.sleep(interval)
         timestamp = datetime.datetime.now()
 
