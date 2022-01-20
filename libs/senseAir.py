@@ -52,7 +52,7 @@ def air_data(n = 3, runs = 1, name = "001"):
     time.sleep(10)
     aq_data = []
 
-    os.chdir('/home/pi/sensor/')
+    os.chdir('/home/pi/AQ/sensor/')
     with open("aq_log_%s.txt" % name, "w") as csvfile:
         savefile = csv.writer(csvfile,delimiter=',')
 
