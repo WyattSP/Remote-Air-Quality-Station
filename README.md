@@ -31,6 +31,6 @@ scp pi@IP:/home/pi/directory/aq_log_001.txt aq_log_001.txt
 ```
 
 To turn off the pi from the shell
-'''bash
+```bash
 sudo shutdown -h -P now
-'''
+```
