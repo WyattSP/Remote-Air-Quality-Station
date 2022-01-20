@@ -67,12 +67,13 @@ def air_data(n = 3, runs = 1, name = "001"):
                 aq_data.append(outp)
 
         except KeyboardInterrupt:
+            print(" Sampling Terminated")
             pass
 
-    return
+    return(print("Testing Complete"))
 
 if __name__ == "__main__":
     print("runtime estimated %s" % (input_r*input_a))
     time.sleep(1)
     air_data(input_a,input_r,input_n)
-    print("Testing Complete")
+    print("Results saved to aq_log")
