@@ -25,11 +25,12 @@ Run Sensor. Output will stream in the shell until run is complete.
 ```bash
 pi@raspberry:~/home/pi/directory $ python3 senseAir.py -a 1 -r 10 -n 001
 ```
-Transfer log file from pi onto local computer
+Transfer log file from pi onto local computer. Run this from local bash.
 ```bash
-pi@raspberry:~/home/pi/directory $ get /log_files/aq_log_001.txt
-
-#or
-
-$ scp -rv aq_log_001.txt pi@IP:/path/to/copy/of/aq_log_001/
+scp pi@IP:/home/pi/directory/aq_log_001.txt aq_log_001.txt
 ```
+
+To turn off the pi from the shell
+'''bash
+sudo shutdown -h -P now
+'''
