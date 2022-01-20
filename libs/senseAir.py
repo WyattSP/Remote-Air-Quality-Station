@@ -7,6 +7,7 @@ from datetime import datetime
 import argparse
 import os
 import csv
+import timeit
 
 #Initate arg parser
 my_parser = argparse.ArgumentParser(description='Input Parameters')
@@ -37,10 +38,15 @@ sensor = SDS011("/dev/ttyUSB0")
 #sensor.sleep(sleep = False) #on
 #sensor.sleep(sleep = True) #off
 #pm_2_5, pm_10 = sensor.query()
+def log_senser_time(start_time,end_time):
+    with open("/sensor/sds_log.txt", 'a') as file:
+        t = end_time-start_time
+        file.write('Runtime: %s' % t)
 
 #data collection
 def air_data(n = 3, runs = 1, name = "001"):
     sensor.sleep(sleep=False)
+    start = timeit.default_timer()
     pm_2_5 = 0
     pm_10 = 0
     time.sleep(10)
@@ -70,6 +76,9 @@ def air_data(n = 3, runs = 1, name = "001"):
             print(" Sampling Terminated")
             pass
 
+    sensor.sleep(sleep=True)
+    end = timeit.default_timer()
+    log_senser_time(start,end)
     return(print("Testing Complete"))
 
 if __name__ == "__main__":

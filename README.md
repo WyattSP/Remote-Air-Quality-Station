@@ -8,8 +8,8 @@ pip install python-aqi
 
 ## Commands from terminal
 
-- Connect to pi using ssh in shell
-- Check working directory
+Connect to pi using ssh in shell
+Check working directory
 ```bash
 pi@raspberry:~ $ pwd
 ```
