@@ -1,11 +1,6 @@
 #Test program for Pi
 
 # -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 
 from datetime import datetime
 from datetime import timedelta
