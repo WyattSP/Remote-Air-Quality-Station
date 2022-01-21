@@ -4,6 +4,13 @@
 
  Remote PM 2.5 SDS011 air quality station with temperature and humidity.
 
+## Hardware
+
+Demo Version:
+- Raspberry Pi 4 4GB
+- Nova Pm Sensor SDS011
+- Raspberry Pi Sense Hat
+- Battery Pack (Will Update)
 
 ## Dependencies
 
