@@ -14,9 +14,10 @@ Demo Version:
 
 ## Dependencies
 
+```bash
 pip install python-aqi
 pip install plotly
-
+```
 ## Commands from terminal
 Workflow:
 
