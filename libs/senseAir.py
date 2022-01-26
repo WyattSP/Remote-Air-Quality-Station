@@ -1,5 +1,4 @@
 from sds011sensor import *
-from senseLED import *
 import aqi
 import time
 
@@ -21,15 +20,11 @@ my_parser.add_argument('-r',
                        type = int,
                        help = 'air qulity runs (2s between samples)')
 
-my_parser.add_argument('-n',
-                       type = str,
-                       help = 'name of save file')
 
 #Execute the parse_args()
 args = my_parser.parse_args()
 input_a = args.a #average
 input_r = args.r #runs
-input_n = args.n #name
 
 #Create sensor instance
 sensor = SDS011("/dev/ttyUSB0")
@@ -39,26 +34,29 @@ sensor = SDS011("/dev/ttyUSB0")
 #sensor.sleep(sleep = True) #off
 #pm_2_5, pm_10 = sensor.query()
 def log_senser_time(start_time,end_time):
-    with open("/sensor/sds_log.txt", 'a') as file:
+    with open("sds_log.txt", 'a') as file:
         t = end_time-start_time
-        file.write('Runtime: %s' % t)
+        file.write(f"Runtime {t} s on {datetime.now()}\n")
 
 #data collection
-def air_data(n = 3, runs = 1, name = "001"):
+def air_data(n = 3, runs = 1):
     sensor.sleep(sleep=False)
     start = timeit.default_timer()
-    pm_2_5 = 0
-    pm_10 = 0
+
     time.sleep(10)
     aq_data = []
 
     os.chdir('/home/pi/AQ/sensor/')
-    with open("aq_log_%s.txt" % name, "w") as csvfile:
+    with open("aq_log.txt" % name, "w") as csvfile:
         savefile = csv.writer(csvfile,delimiter=',')
 
         try:
 
-            for i in runs:
+            for i in range(runs):
+
+                pm_2_5 = 0
+                pm_10 = 0
+
                 for j in range(n):
                     x = sensor.query()
                     pm_2_5 =  pm_2_5 + x[0]
@@ -69,8 +67,8 @@ def air_data(n = 3, runs = 1, name = "001"):
                 aqi_2_5 = aqi.to_iaqi(aqi.POLLUTANT_PM25, str(pm_2_5))
                 aqi_10 = aqi.to_iaqi(aqi.POLLUTANT_PM10, str(pm_10))
                 outp = (datetime.now(),pm_2_5,aqi_2_5,pm_10,aqi_10)
+                savefile.writerow(outp)
                 print(outp)
-                aq_data.append(outp)
 
         except KeyboardInterrupt:
             print(" Sampling Terminated")
@@ -79,10 +77,10 @@ def air_data(n = 3, runs = 1, name = "001"):
     sensor.sleep(sleep=True)
     end = timeit.default_timer()
     log_senser_time(start,end)
-    return(print("Testing Complete"))
+    return(print(" Sampling Complete"))
 
 if __name__ == "__main__":
-    print("runtime estimated %s" % (input_r*input_a))
+    print("runtime estimated %s" % (input_r*input_a+20))
     time.sleep(1)
-    air_data(input_a,input_r,input_n)
+    air_data(input_a,input_r)
     print("Results saved to aq_log")

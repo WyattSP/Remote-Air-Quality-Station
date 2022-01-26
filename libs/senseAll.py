@@ -29,7 +29,6 @@ input_r = args.r #runs
 
 #Create sensor instance
 sensor = SDS011("/dev/ttyUSB0")
-
 #Initate sense HAT
 sense = SenseHat()
 
@@ -48,10 +47,29 @@ def exit_program():
     sense.clear()
     return
 
+B = (0,0,225)
+
+def collecting():
+    sense.clear()
+    signal = [
+    O, O, O, O, O, O, O, O,
+    O, O, O, O, O, O, O, O,
+    O, O, O, O, O, O, O, O,
+    O, O, O, B, B, O, O, O,
+    O, O, O, B, B, O, O, O,
+    O, O, O, O, O, O, O, O,
+    O, O, O, O, O, O, O, O,
+    O, O, O, O, O, O, O, O,
+    ]
+    sense.set_pixels(signal)
+    time.sleep(1)
+    sense.clear()
+    return
+
 def log_senser_time(start_time,end_time):
-    with open("/sensor/sds_log.txt", 'a') as file:
+    with open("sds_log.txt", 'a') as file:
         t = end_time-start_time
-        file.write('Runtime: %s' % t)
+        file.write(f"Runtime {t} s on {datetime.now()}\n")
 
 #data collection
 def air_data(n = 3, runs = 1):
@@ -59,10 +77,8 @@ def air_data(n = 3, runs = 1):
 
     sensor.sleep(sleep=False)
     start = timeit.default_timer()
-    pm_2_5 = 0
-    pm_10 = 0
+
     time.sleep(10)
-    aq_data = []
 
     os.chdir('/home/pi/AQ/sensor/')
     with open("aq_log_%s.txt" % name, "w") as csvfile:
@@ -70,7 +86,11 @@ def air_data(n = 3, runs = 1):
 
         try:
 
-            for i in runs:
+            for i in range(runs):
+
+                pm_2_5 = 0
+                pm_10 = 0
+
                 for j in range(n):
                     x = sensor.query()
                     pm_2_5 =  pm_2_5 + x[0]
@@ -80,9 +100,14 @@ def air_data(n = 3, runs = 1):
                 pm_10 = round(pm_10/n, 1)
                 aqi_2_5 = aqi.to_iaqi(aqi.POLLUTANT_PM25, str(pm_2_5))
                 aqi_10 = aqi.to_iaqi(aqi.POLLUTANT_PM10, str(pm_10))
-                outp = (datetime.now(),pm_2_5,aqi_2_5,pm_10,aqi_10,sense.get_humidity(),sense.get_temperature(),sense.pressure())
+
+                temp = sense.get_temperature()
+                hum = sense.get_humidity()
+                press = sense.get_pressure()
+
+                outp = (datetime.now(),pm_2_5,aqi_2_5,pm_10,aqi_10,hum, temp, press)
+                savefile.writerow(outp)
                 print(outp)
-                aq_data.append(outp)
 
         except KeyboardInterrupt:
             exit_program()
@@ -92,10 +117,11 @@ def air_data(n = 3, runs = 1):
     sensor.sleep(sleep=True)
     end = timeit.default_timer()
     log_senser_time(start,end)
-    return(print("Testing Complete"))
+    return(print(" Sampling Complete"))
 
 if __name__ == "__main__":
-    print("runtime estimated %s" % (input_r*input_a))
+    print("runtime estimated %s" % (input_r*input_a+30))
     time.sleep(1)
     air_data(input_a,input_r)
     print("Results saved to aq_log")
+    exit_program()

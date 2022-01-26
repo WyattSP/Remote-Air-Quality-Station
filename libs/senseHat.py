@@ -2,6 +2,10 @@
 from sense_hat import SenseHat
 from datetime import datetime
 import time
+from datetime import timedelta
+
+import os
+import csv
 
 import argparse
 
@@ -24,6 +28,20 @@ input_r = args.r #runs
 
 sense = SenseHat()
 
+def start_program():
+    sense.clear()
+    sense.show_letter(str('S'))
+    time.sleep(3)
+    sense.clear()
+    return
+
+def exit_program():
+    sense.clear()
+    sense.show_letter(str('C'))
+    time.sleep(3)
+    sleep.clear()
+    return
+
 def get_sense_data(input_Duration = 60, input_Interval = 1):
 
     sense_data = []
@@ -33,16 +51,21 @@ def get_sense_data(input_Duration = 60, input_Interval = 1):
     stoptime = timestamp + timedelta(seconds=input_Duration)
 
     os.chdir('/home/pi/AQ/sensor/')
-    with open("env_log_%s.txt" % name, "w") as csvfile:
+    with open("env_log_%s.txt", "w") as csvfile:
         savefile = csv.writer(csvfile,delimiter=',')
 
         try:
             while True:
                 while timestamp < stoptime:
-                    val = ((timestamp,sense.get_humidity(),sense.get_temperature(),sense.pressure()))
+
+                    temp = sense.get_temperature()
+                    hum = sense.get_humidity()
+                    press = sense.get_pressure()
+
+                    val = (timestamp,temp,hum,press)
                     print(val)
                     savefile.writerow(val)
-                    sense_data.append(val)
+
                     time.sleep(input_Interval)
                     timestamp = datetime.now()
 
@@ -54,6 +77,7 @@ def get_sense_data(input_Duration = 60, input_Interval = 1):
     return(print("ENV Testing Complete"))
 
 if __name__ == "__main__":
+    start_program()
     print("runtime estimated %s" % (input_r*input_a+20))
     time.sleep(1)
     get_sense_data(input_a,input_r)
