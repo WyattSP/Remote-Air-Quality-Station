@@ -47,10 +47,21 @@ Run test script and check output
 ```bash
 pi@raspberry:~/home/pi/directory $ python3 test.py
 ```
+There are three alternative ways to set up and run the air quality monitoring. If you intend to have internet connection between your pi and local computer for the entire test run the below code. If you intend to only be connected on start up or not at all follow the below instructions.
+
 Run Sensor. Output will stream in the shell until run is complete.
 ```bash
 pi@raspberry:~/home/pi/directory $ python3 senseAir.py -a 1 -r 100
 ```
+
+If you only have a connection at the beginning of sampling and at the end, you can use the nohup command, such that your python program will continue to run after your ssh connection disconnects. Run the below code if this is the case. You can reconnect over a ssh again once the test is completed. Output will still be saved to your long file.
+
+```bash
+nohup python3 senseAir.py -a 3 -r 600 &
+```
+
+If you will not have any connection with your pi prior to sampling, you can have the pi begin air sampling on boot. You will need to edit your program prior to running, as you'll need to set the default parameters to fit your needs.
+
 Transfer log file from pi onto local computer. Remember to change your directory on your local machine to the location where you want the file saved. Run this from local bash in new shell terminal. Make sure not to disconnect ssh connection with pi (this might actually not matter).
 ```bash
 scp pi@IP:/home/pi/directory/aq_log.txt aq_log.txt
