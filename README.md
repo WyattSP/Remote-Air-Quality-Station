@@ -80,3 +80,17 @@ After plot_ssd.py has been edited and saved run in terminal:
 python plot_ssd.py
 ```
 A plot of the air quality data should appear in your safari browser. If it does not, you may need to install plotly first onto your machine using pip.
+
+## Example Outputs
+
+### Air Quality in the Office
+
+<img src = "Images/office_air.png">
+
+Air was sampled for 1:45.14 hours.
+
+### Air Quality Near a Wood Burning Stove
+
+<img src = "Images/fire_air.png">
+
+Air was sampled for 1:03.12 hours.
