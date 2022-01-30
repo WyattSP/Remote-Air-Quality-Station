@@ -94,3 +94,11 @@ Air was sampled for 1:45.14 hours.
 <img src = "Images/fire_air.png">
 
 Air was sampled for 1:03.12 hours.
+
+### Plotted at the Same Scale
+
+To compare the air quality between the office and the house (wood burning stove) I re-plotted the results with the same axis and with the AQI ranges. As you can see the office air was in the 'Good' range for the entire test. The wood burning stove in contrast shows moderate air quality. The initial spike in the wood burning plot was due to us putting a new log on the fire.
+
+<img src = "Images/office_air_AQI.png">
+
+<img src = "Images/fire_air_AQI.png">
