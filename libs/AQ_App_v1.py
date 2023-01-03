@@ -11,7 +11,9 @@ from datetime import datetime
 #Imports needed for aqi
 import aqi
 import psutil
+from sds011sensor import *
 
+#Create sensor instance
 sensor = SDS011("/dev/ttyUSB0")
 
 def data_aquire():
@@ -55,7 +57,7 @@ def simple_data_retrival():
         #pres = np.random.random()
         #pres = round(pres,2)
         #vals.append(pres)
-        x = senor.query()
+        x = sensor.query()
         pm_2_5 = pm_2_5 + x[0]
         pm_10 = pm_10 + x[1]
         aqi_2_5 = aqi.to_iaqi(aqi.POLLUTANT_PM25, str(pm_2_5))
@@ -70,9 +72,9 @@ def simple_data_retrival():
     return vals
 
 def fig_maker(window,fig_vals): # this should be called as a thread, then time.sleep() here would not freeze the GUI
+    plt.rcParama["figure.figsize"] = [4,2]
     frame1 = plt.plot([x[-1] for x in fig_vals],[x[1] for x in fig_vals],label = 'AQI 2.5')
     frame2 = plt.plot([x[-1] for x in fig_vals],[x[3] for x in fig_vals],label = 'AQI 10')
-    #frame1.axes.xaxis.set_ticklabels([])
     frame1 = plt.ylabel("Air Quality")
     frame1 = plt.xlabel("Time")
     window.write_event_value('-THREAD-', 'done.')
@@ -98,8 +100,8 @@ if __name__ == '__main__':
     [sg.Checkbox('Air Quality', key = 'AQ')],
     [sg.Button('update'), sg.Button('Stop', key="-STOP-"), sg.Button('Exit', key="-EXIT-")],
     [sg.Radio('Keep looping', "RADIO1", default=True, size=(12,3),key="-LOOP-"),sg.Radio('Stop looping', "RADIO1", size=(12,3), key='-NOLOOP-')],
-    [sg.Text('Plot test', font='Any 18')],
-    [sg.Canvas(size=(500,500), key='canvas')]]
+    [sg.Text('PM 2.5 PM 10 Plot', font='Any 18')],
+    [sg.Canvas(size=(320,240), key='canvas')]]
 
     # create the form and show it without the plot
     window = sg.Window('Air Quality App',
