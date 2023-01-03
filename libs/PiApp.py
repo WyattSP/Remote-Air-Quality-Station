@@ -22,10 +22,10 @@ import os
 import csv
 
 #Create sensor instance
-#sense = SenseHat()
+sense = SenseHat()
 
 #Create air quality sensor instance
-#sensor = SDS011("/dev/ttyUSB0")
+sensor = SDS011("/dev/ttyUSB0")
 
 #Define Save location for log
 #def log_senser_time(start_time,end_time):
@@ -67,6 +67,11 @@ if __name__ == '__main__':
             window['timeout'].update(values['Dur'])
             window['intout'].update(values['Int'])
             window['character'].update(values['Char'])
+
+            if values['Char'] == True:
+                window['Out'].update('Text on SenseHat')
+                sense.show_letter(str(values['Char']))
+
             try:
                 duration = float(values['Dur'])
                 interval = float(values['Int'])
@@ -91,29 +96,24 @@ if __name__ == '__main__':
 
                     vals = []
                     if values['Temp'] == True:
-                        #temp = sense.get_temperature()
-                        temp = np.random.random()
+                        temp = sense.get_temperature()
                         temp = round(temp,2)
                         vals.append(temp)
                     if values['Pressure'] == True:
-                        #pres = sense.get_pressure()
-                        pres = np.random.random()
+                        pres = sense.get_pressure()
                         pres = round(pres,2)
                         vals.append(pres)
                     if values['Humidity'] == True:
-                        #hum = sense.get_humidity()
-                        hum = np.random.random()
+                        hum = sense.get_humidity()
                         hum = round(hum,2)
                         vals.append(hum)
                     if values['AQ'] == True:
                         #Collect AQ data
                         #Initite vector
-                        pm_2_5 = np.random.random()
-                        pm_10 = np.random.random()
                         #Sample
-                        #x = senor.query()
-                        #pm_2_5 = pm_2_5 + x[0]
-                        #pm_10 = pm_10 + x[1]
+                        x = senor.query()
+                        pm_2_5 = pm_2_5 + x[0]
+                        pm_10 = pm_10 + x[1]
                         aqi_2_5 = aqi.to_iaqi(aqi.POLLUTANT_PM25, str(pm_2_5))
                         aqi_10 = aqi.to_iaqi(aqi.POLLUTANT_PM10, str(pm_10))
                         pm_2_5 = round(pm_2_5,2)
@@ -136,7 +136,7 @@ if __name__ == '__main__':
             except:
                 if values['Char'] == True:
                     window['Out'].update('Text on SenseHat')
-                    #sense.show_letter(str(values['Char']))
+                    sense.show_letter(character)
                 else:
                     window['Out'].update('Not Running')
 
