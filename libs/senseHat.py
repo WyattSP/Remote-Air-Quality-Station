@@ -78,7 +78,7 @@ def get_sense_data(input_Duration = 60, input_Interval = 1):
 
 if __name__ == "__main__":
     start_program()
-    print("runtime estimated %s" % (input_r*input_a+20))
+    print(f"runtime estimated {input_r*input_a+20}")
     time.sleep(1)
     get_sense_data(input_a,input_r)
     print("Results saved to env_log")
