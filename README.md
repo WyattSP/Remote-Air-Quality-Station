@@ -103,3 +103,9 @@ To compare the air quality between the office and the house (wood burning stove)
 <img src = "Images/office_air_AQI.png">
 
 <img src = "Images/fire_air_AQI.png">
+
+## Using BME680
+
+This sensor uses i2c. To check that it is connected correctly in shell: i2cdetect -y 1
+
+
